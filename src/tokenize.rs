@@ -228,3 +228,39 @@ fn is_alpha_numeric(c: char) -> bool
 {
     is_alpha(c) || c >= '0' && c <= '9'
 }
+
+#[cfg(test)]
+mod test
+{
+    use super::*;
+
+    #[test]
+    fn test_is_numeric()
+    {
+        assert!(is_numeric('0'));
+        assert!(is_numeric('9'));
+
+        // '/' is directly below '0' in ascii encoding
+        assert!(!is_numeric('/'));
+
+        // ':' is directly above '9' in ascii encoding
+        assert!(!is_numeric(':'));
+    }
+
+    #[test]
+    fn test_is_alpha()
+    {
+        assert!(is_alpha('a'));
+        assert!(is_alpha('z'));
+        assert!(is_alpha('Z'));
+
+        // '@' comes before 'A'
+        assert!(!is_alpha('@'));
+        // '[' comes after 'Z'
+        assert!(!is_alpha('['));
+        // '`' comes before 'a'
+        assert!(!is_alpha('`'));
+        // '{' comes after 'z'
+        assert!(!is_alpha('{'));
+    }
+}
