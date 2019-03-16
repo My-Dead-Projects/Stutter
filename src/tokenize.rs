@@ -21,7 +21,7 @@ pub fn tokenize(s: &str) -> Vec<String>
         println!("{}, {}", start_tok, end_tok);
         tokens.push(s[start_tok..end_tok].to_owned());
         
-        start_tok = end_tok - 1;
+        start_tok = end_tok;
     }
 
     tokens
@@ -116,37 +116,38 @@ fn number(s: &str) -> usize
             }
             else
             {
-                break;
+                if c == '.'
+                {
+                    // This is a floating point number - there are more digits
+                    break;
+                }
+                else
+                {
+                    // This is an int - this is the end of the token
+                    return i;
+                }
             }
         }
-        // If we've reached the end of `s`, this is the last token in `s`.
-        // Return the position past the end of `s`, to indicate the final token
+        // Every branch of the if statment above breaks or returns.
+        // If we're here, it's because the current char is numeric.
+        // As long as this is not the end of `s`, we just keep iterating.
+
         if !iter.peek().is_some()
         {
+            // End of the string
+            // `i` is the index of the final char.
+            // `i + 1` denotes the end of the final token in `s`.
             return i + 1;
-        }
-    }
-
-    // At this point, we've reachaed a non-numeric character.
-    // If the char is a '.', then we may have a floating point value.
-    // We know iter.next() will give `Some()`
-
-    if let Some((i, c)) = iter.next()
-    {
-        // If `c` is some character other than '.', this is the end of the token
-        if c != '.'
-        {
-            return i;
         }
     }
 
     // At this point, we know the last char was a '.', so we expect more
     // numeric chars now.
-    // We need to check that the next char is numeric
     if let Some((_, c)) = iter.next()
     {
         if !is_numeric(c)
         {
+            // We found a decimal point, so we expected a numeric char to follow
             // TODO: Error handling
             panic!("number ending in decimal point and no fractional value");
         }
@@ -233,6 +234,21 @@ fn is_alpha_numeric(c: char) -> bool
 mod test
 {
     use super::*;
+
+    #[test]
+    fn test_ident()
+    {
+        assert_eq!(ident("abc"), 3);
+        assert_eq!(ident("abc12"), 5);
+        assert_eq!(ident(r#"abc"12""#), 3);
+    }
+
+    #[test]
+    fn test_number()
+    {
+        assert_eq!(number("123"), 3);
+        assert_eq!(number("12a"), 2);
+    }
 
     #[test]
     fn test_is_numeric()
