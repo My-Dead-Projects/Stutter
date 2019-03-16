@@ -1,0 +1,20 @@
+
+# Put && or || at the end of the line on a multiline if statement
+binop_separator = "Back"
+
+# Open braces for if/else statements go on the next line
+control_brace_style = "AlwaysNextLine"
+
+# Open braces for everything else always go on the next line
+brace_style = "AlwaysNextLine"
+
+# Values will line up unless the name is longer than 15 chars
+enum_discrim_align_threshold = 15
+struct_field_align_threshold = 15
+
+# Long strings will wrap automatically at 80 chars
+format_strings = true
+
+newline_style = "Unix"
+
+indent_style = "Visual"

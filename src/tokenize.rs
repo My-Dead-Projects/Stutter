@@ -1,4 +1,3 @@
-
 pub fn tokenize(s: &str) -> Vec<String>
 {
     let mut tokens = Vec::new();
@@ -15,11 +14,11 @@ pub fn tokenize(s: &str) -> Vec<String>
         end_tok += match next_token(&s[start_tok..])
         {
             Some(pos) => pos,
-            None => break
+            None => break,
         };
-        
+
         tokens.push(s[start_tok..end_tok].to_owned());
-        
+
         start_tok = end_tok;
     }
 
@@ -59,7 +58,6 @@ fn next_token(s: &str) -> Option<usize>
 /// Returns the position of the first character after the identifier
 fn ident(s: &str) -> usize
 {
-
     let mut iter = s.chars().enumerate().peekable();
 
     if let Some((_, c)) = iter.peek()
@@ -93,7 +91,7 @@ fn ident(s: &str) -> usize
             return i + 1;
         }
     }
-    
+
     unreachable!();
 }
 
@@ -101,7 +99,7 @@ fn ident(s: &str) -> usize
 fn number(s: &str) -> usize
 {
     let mut iter = s.chars().enumerate().peekable();
-    
+
     // First, read the integer part
 
     while let Some((i, c)) = iter.next()
@@ -193,7 +191,7 @@ fn string(s: &str) -> usize
     {
         panic!("Empty token");
     }
-    
+
     while let Some((i, c)) = iter.next()
     {
         if c == '"'
@@ -240,7 +238,8 @@ mod test
         assert_eq!(tokenize("abc12"), &["abc12"]);
         assert_eq!(tokenize("12abc"), &["12", "abc"]);
         assert_eq!(tokenize("12abc12"), &["12", "abc12"]);
-        assert_eq!(tokenize(r#""hello12"43ab59"#), &[r#""hello12""#, "43", "ab59"]);
+        assert_eq!(tokenize(r#""hello12"43ab59"#),
+                   &[r#""hello12""#, "43", "ab59"]);
     }
 
     #[test]
