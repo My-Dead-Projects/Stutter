@@ -252,6 +252,7 @@ mod test
     {
         assert!(is_alpha('a'));
         assert!(is_alpha('z'));
+        assert!(is_alpha('A'));
         assert!(is_alpha('Z'));
 
         // '@' comes before 'A'
@@ -262,5 +263,31 @@ mod test
         assert!(!is_alpha('`'));
         // '{' comes after 'z'
         assert!(!is_alpha('{'));
+    }
+
+    #[test]
+    fn test_is_alpha_numeric()
+    {
+        assert!(is_alpha_numeric('0'));
+        assert!(is_alpha_numeric('9'));
+
+        // '/' comes before '0' in ascii encoding
+        assert!(!is_alpha_numeric('/'));
+        // ':' comes after '9' in ascii encoding
+        assert!(!is_alpha_numeric(':'));
+
+        assert!(is_alpha_numeric('a'));
+        assert!(is_alpha_numeric('z'));
+        assert!(is_alpha_numeric('A'));
+        assert!(is_alpha_numeric('Z'));
+
+        // '@' comes before 'A'
+        assert!(!is_alpha_numeric('@'));
+        // '[' comes after 'Z'
+        assert!(!is_alpha_numeric('['));
+        // '`' comes before 'a'
+        assert!(!is_alpha_numeric('`'));
+        // '{' comes after 'z'
+        assert!(!is_alpha_numeric('{'));
     }
 }
