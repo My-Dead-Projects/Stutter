@@ -18,7 +18,6 @@ pub fn tokenize(s: &str) -> Vec<String>
             None => break
         };
         
-        println!("{}, {}", start_tok, end_tok);
         tokens.push(s[start_tok..end_tok].to_owned());
         
         start_tok = end_tok;
@@ -236,6 +235,15 @@ mod test
     use super::*;
 
     #[test]
+    fn test_tokenize()
+    {
+        assert_eq!(tokenize("abc12"), &["abc12"]);
+        assert_eq!(tokenize("12abc"), &["12", "abc"]);
+        assert_eq!(tokenize("12abc12"), &["12", "abc12"]);
+        assert_eq!(tokenize(r#""hello12"43ab59"#), &[r#""hello12""#, "43", "ab59"]);
+    }
+
+    #[test]
     fn test_ident()
     {
         assert_eq!(ident("abc"), 3);
@@ -248,6 +256,17 @@ mod test
     {
         assert_eq!(number("123"), 3);
         assert_eq!(number("12a"), 2);
+    }
+
+    #[test]
+    fn test_string()
+    {
+        assert_eq!(string(r#""abc""#), 5);
+        assert_eq!(string(r#""""#), 2);
+        assert_eq!(string(r#""12abc34""#), 9);
+        assert_eq!(string(r#""abc"hello"#), 5);
+        assert_eq!(string(r#""" ""#), 2);
+        assert_eq!(string(r#""12abc34" lookie here"#), 9);
     }
 
     #[test]
